@@ -4,6 +4,25 @@ const fs = require('fs');
 
 const token = '8065462921:AAEZDYvlP85SAy5e4hXqQBOULmP87nLNLdI';
 
+const url = 'https://your-render-service-url.onrender.com';
+const port = process.env.PORT || 3000;
+
+bot.setWebHook(`${url}/bot${token}`);
+
+const express = require('express');
+const app = express();
+
+app.use(express.json());
+
+app.post(`/bot${token}`, (req, res) => {
+  bot.processUpdate(req.body);
+  res.sendStatus(200);
+});
+
+app.listen(port, () => {
+  console.log(`Express server is listening on ${port}`);
+});
+
 const bot = new TelegramBot(token, { polling: true });
 
 const urlPattern = /(https?:\/\/[^\s]+)/g;
