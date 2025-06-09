@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "node-telegram-bot-api": "^0.66.0",
+    "nodemon": "^3.1.10",
+    "yt-dlp-exec": "^1.0.2"
+  },
+  "scripts": {
+    "start": "nodemon bot.js"
+  },
+  "name": "telegram-downloader-bot",
+  "version": "1.0.0",
+  "main": "bot.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
