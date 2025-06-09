@@ -5,7 +5,7 @@
     "yt-dlp-exec": "^1.0.2"
   },
   "scripts": {
-    "start": "nodemon bot.js"
+    "start": "node bot.js"
   },
   "name": "telegram-downloader-bot",
   "version": "1.0.0",
