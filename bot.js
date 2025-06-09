@@ -5,11 +5,9 @@ const fs = require('fs');
 const token = '8065462921:AAEZDYvlP85SAy5e4hXqQBOULmP87nLNLdI';
 
 // Faqat mana shu yetarli:
-const bot = new TelegramBot(token, { polling: true }); 
+const bot = new TelegramBot(token, { polling: true });
 
 const urlPattern = /(https?:\/\/[^\s]+)/g;
-
-// Har bir chat uchun oxirgi linkni saqlash
 const userLinks = {};
 
 bot.on('message', async (msg) => {
@@ -21,7 +19,7 @@ bot.on('message', async (msg) => {
 
     if (match && match[0]) {
         const url = match[0];
-        userLinks[chatId] = url; // Linkni saqlaymiz
+        userLinks[chatId] = url;
 
         let captionText = '✅ Video yuklandi!';
         if (url.includes('instagram.com')) {
@@ -32,10 +30,9 @@ bot.on('message', async (msg) => {
 
         bot.sendMessage(chatId, '📥 Videoni yuklab olyapman, biroz kuting...').then((loadingMessage) => {
             const loadingMessageId = loadingMessage.message_id;
-
             const videoFile = `video_${Date.now()}.mp4`;
 
-            exec(`yt-dlp.exe -o "${videoFile}" "${url}"`, (videoError, videoStdout, videoStderr) => {
+            exec(`yt-dlp -o "${videoFile}" "${url}"`, (videoError) => {
                 if (videoError) {
                     console.error(`Video xatolik: ${videoError.message}`);
                     bot.sendMessage(chatId, '❌ Video yuklashda xatolik yuz berdi.');
@@ -43,7 +40,6 @@ bot.on('message', async (msg) => {
                     return;
                 }
 
-                // Inline button yaratamiz
                 const options = {
                     caption: captionText,
                     reply_markup: {
@@ -55,7 +51,6 @@ bot.on('message', async (msg) => {
 
                 bot.sendVideo(chatId, videoFile, options).then(() => {
                     fs.unlinkSync(videoFile);
-
                     bot.deleteMessage(chatId, messageId).catch(() => {});
                     bot.deleteMessage(chatId, loadingMessageId).catch(() => {});
                 }).catch((err) => {
@@ -72,7 +67,6 @@ bot.on('message', async (msg) => {
 
 bot.on('callback_query', (callbackQuery) => {
     const chatId = callbackQuery.message.chat.id;
-    const messageId = callbackQuery.message.message_id;
     const data = callbackQuery.data;
 
     if (data === 'get_audio') {
@@ -84,10 +78,9 @@ bot.on('callback_query', (callbackQuery) => {
 
         bot.sendMessage(chatId, '🎵 Musiqani yuklab olyapman, biroz kuting...').then((audioLoadingMessage) => {
             const audioLoadingMessageId = audioLoadingMessage.message_id;
-
             const audioFile = `audio_${Date.now()}.mp3`;
 
-            exec(`yt-dlp.exe -f bestaudio -x --audio-format mp3 -o "${audioFile}" "${url}"`, (audioError, audioStdout, audioStderr) => {
+            exec(`yt-dlp -f bestaudio -x --audio-format mp3 -o "${audioFile}" "${url}"`, (audioError) => {
                 if (audioError) {
                     console.error(`Audio xatolik: ${audioError.message}`);
                     bot.sendMessage(chatId, '❌ Audio yuklashda xatolik yuz berdi.');
