@@ -4,7 +4,7 @@ const fs = require('fs');
 
 const token = '8065462921:AAEZDYvlP85SAy5e4hXqQBOULmP87nLNLdI';
 
-const url = 'https://your-render-service-url.onrender.com';
+const url = 'https://telegram-downloader-bot-k3x2.onrender.com';
 const port = process.env.PORT || 3000;
 
 bot.setWebHook(`${url}/bot${token}`);
