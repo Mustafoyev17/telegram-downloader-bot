@@ -1,8 +1,11 @@
+require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
 const { exec, spawn } = require('child_process');
 const fs = require('fs');
 
-const token = '8065462921:AAEZDYvlP85SAy5e4hXqQBOULmP87nLNLdI';
+require('dotenv').config();
+const token = process.env.TOKEN;
+
 const bot = new TelegramBot(token, { polling: true });
 
 const urlPattern = /(https?:\/\/[^\s]+)/g;
